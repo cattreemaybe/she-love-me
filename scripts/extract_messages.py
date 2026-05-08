@@ -67,7 +67,7 @@ def load_contacts(decrypted_dir):
     names = {}
     if not os.path.exists(contact_db):
         return names
-    conn = sqlite3.connect(contact_db)
+    conn = sqlite3.connect(f"file:{contact_db}?immutable=1", uri=True)
     try:
         for row in conn.execute("SELECT username, nick_name, remark FROM contact").fetchall():
             uname, nick, remark = row
@@ -125,7 +125,7 @@ def get_own_wxid(decrypted_dir):
 def extract_messages_from_db(db_path, table_name, id_to_username, own_wxid, contact_username, contact_display):
     messages = []
     try:
-        conn = sqlite3.connect(db_path)
+        conn = sqlite3.connect(f"file:{db_path}?immutable=1", uri=True)
         try:
             rows = conn.execute(
                 f"SELECT local_id, local_type, create_time, real_sender_id, "
@@ -235,7 +235,7 @@ def main():
     all_messages = []
     for db_file in msg_dbs:
         db_path = os.path.join(msg_dir, db_file)
-        conn = sqlite3.connect(db_path)
+        conn = sqlite3.connect(f"file:{db_path}?immutable=1", uri=True)
         try:
             exists = conn.execute(
                 "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?",

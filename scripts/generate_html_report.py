@@ -634,7 +634,7 @@ def render_patriarch_wisdom(wisdom):
     </div>"""
 
 
-
+def render_html(stats, analysis, contact_name):
     scores    = stats.get("scores", {})
     simp      = scores.get("simp_index", 0)
     loved     = scores.get("loved_index", 0)

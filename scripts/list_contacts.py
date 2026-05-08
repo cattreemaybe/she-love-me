@@ -31,7 +31,7 @@ def load_contacts(decrypted_dir):
         return []
 
     contacts = []
-    conn = sqlite3.connect(contact_db)
+    conn = sqlite3.connect(f"file:{contact_db}?immutable=1", uri=True)
     try:
         rows = conn.execute(
             "SELECT username, nick_name, remark FROM contact WHERE username NOT LIKE '%@chatroom'"
@@ -70,7 +70,7 @@ def count_messages(decrypted_dir, contacts):
     for db_file in msg_dbs:
         db_path = os.path.join(msg_dir, db_file)
         try:
-            conn = sqlite3.connect(db_path)
+            conn = sqlite3.connect(f"file:{db_path}?immutable=1", uri=True)
             try:
                 # 通过 Name2Id 表找到 username -> table 的对应关系
                 try:
